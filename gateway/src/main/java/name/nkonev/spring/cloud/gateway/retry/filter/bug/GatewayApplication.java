@@ -18,6 +18,7 @@ public class GatewayApplication {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r -> r.path("/foo/**")
+                        .filters(s -> s.retry(retryConfig -> retryConfig.setRetries(3)))
                         .uri("lb://foo")
                         .id("foo"))
                 .build();
