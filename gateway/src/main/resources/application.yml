@@ -21,3 +21,7 @@ spring:
         - predicates:
             - Path=/foo
           uri: lb://foo
+          filters:
+            - name: Retry
+              args:
+                methods: GET
