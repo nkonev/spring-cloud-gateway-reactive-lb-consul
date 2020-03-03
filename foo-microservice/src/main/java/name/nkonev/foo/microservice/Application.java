@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 @SpringBootApplication
 public class Application {
@@ -17,9 +19,10 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@GetMapping("/foo")
-	public String foo() {
+	@GetMapping("/v1/test-route")
+	public String foo() throws Exception {
 		LOGGER.info("Invoked /foo");
+		TimeUnit.SECONDS.sleep(5);
 		return "hi";
 	}
 
