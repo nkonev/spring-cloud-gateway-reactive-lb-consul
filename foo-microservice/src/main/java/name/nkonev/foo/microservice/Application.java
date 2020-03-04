@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
@@ -20,9 +21,11 @@ public class Application {
 	}
 
 	@GetMapping("/v1/test-route")
-	public String foo() throws Exception {
-		LOGGER.info("Invoked /foo");
-		TimeUnit.SECONDS.sleep(5);
+	public String foo(@RequestParam(name = "sleep", required = false, defaultValue = "0") int secondsToSleep) throws Exception {
+		LOGGER.info("Invoked with {}", secondsToSleep);
+		if (secondsToSleep > 0) {
+			TimeUnit.SECONDS.sleep(secondsToSleep);
+		}
 		return "hi";
 	}
 

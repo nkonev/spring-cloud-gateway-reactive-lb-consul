@@ -18,12 +18,4 @@ spring:
     gateway:
       httpclient:
         connect-timeout: 1000
-        response-timeout: 3s
-#      routes:
-#        - predicates:
-#            - Path=/foo
-#          uri: lb://foo
-#          filters:
-#            - name: Retry
-#              args:
-#                methods: GET
+        response-timeout: 2s
