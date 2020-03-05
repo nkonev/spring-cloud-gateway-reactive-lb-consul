@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: foo
+  cloud:
+    loadbalancer:
+      cache:
+        ttl: 30s
+      ribbon:
+        enabled: false

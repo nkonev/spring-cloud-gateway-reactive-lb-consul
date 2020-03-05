@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
-public class Application {
+public class FooApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger("foo");
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(FooApplication.class, args);
 	}
 
 	@GetMapping("/foo")
