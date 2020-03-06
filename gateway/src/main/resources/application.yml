@@ -10,11 +10,6 @@ spring:
     consul:
       discovery:
         register: false
-    loadbalancer:
-      cache:
-        ttl: 30s
-      ribbon:
-        enabled: false
     gateway:
       httpclient:
         connect-timeout: 1000
