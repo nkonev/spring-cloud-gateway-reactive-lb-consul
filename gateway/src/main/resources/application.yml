@@ -1,4 +1,4 @@
-logging.level.org.springframework.cloud.gateway.filter: trace
+#logging.level.org.springframework.cloud.gateway.filter: trace
 
 server:
   port: 8282
