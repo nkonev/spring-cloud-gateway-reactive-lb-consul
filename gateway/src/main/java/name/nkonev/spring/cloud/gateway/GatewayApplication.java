@@ -2,9 +2,14 @@ package name.nkonev.spring.cloud.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
+import reactor.core.publisher.Mono;
 
 // while true; do curl  http://localhost:8282/foo;  done
-// -Xms32m -Xmx32m -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=128M -Dio.netty.leakDetection.level=PARANOID -XX:NativeMemoryTracking=summary -XX:MaxDirectMemorySize=512k -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/tmp
+// -Xms32m -Xmx32m -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=128M -Dio.netty.leakDetection.level=PARANOID -XX:NativeMemoryTracking=summary -XX:MaxDirectMemorySize=2m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/tmp
 // while true; do curl  -d "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" http://localhost:8282/foo;  done
 // https://dzone.com/articles/troubleshooting-problems-with-native-off-heap-memo
 @SpringBootApplication
@@ -12,6 +17,24 @@ public class GatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
+    }
+
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("foo", r -> r.path("/foo")
+                        .filters(f -> f.modifyRequestBody(String.class, String.class, MediaType.APPLICATION_JSON_VALUE,
+                                (exchange, s) -> Mono.just(s))
+                                .filter(((exchange, chain) -> {
+                                    //do nothing but set complete
+                                    return exchange.getResponse().setComplete();
+
+                                }))
+                        )
+
+                        .uri("lb://foo")
+                )
+                .build();
     }
 
 }
