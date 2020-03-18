@@ -4,3 +4,7 @@ To make your microservices resilient to restart consul you should
 ```bash
 ./consul agent -data-dir /var/tmp/consul -advertise 127.0.0.1 -server -bootstrap
 ```
+
+If you have problems with native memory, which used by Netty, consider to tune
+`-Djdk.nio.maxCachedBufferSize` and `-XX:MaxDirectMemorySize`
+See [also](https://dzone.com/articles/troubleshooting-problems-with-native-off-heap-memo).
