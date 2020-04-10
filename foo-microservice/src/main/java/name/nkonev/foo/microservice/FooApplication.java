@@ -18,7 +18,7 @@ public class FooApplication {
 		SpringApplication.run(FooApplication.class, args);
 	}
 
-	@RequestMapping("/foo")
+	@RequestMapping("/")
 	public String foo() {
 		LOGGER.info("Invoked /foo");
 		return "hi";

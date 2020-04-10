@@ -1,16 +1,25 @@
 #logging.level.org.springframework.cloud.gateway.filter: trace
 
-server:
-  port: 8282
-
 spring:
   application:
-    name: gateway
+    name: dispatcher-modelArts-test
   cloud:
-    consul:
-      discovery:
-        register: false
     gateway:
-      httpclient:
-        connect-timeout: 1000
-        response-timeout: 5s
+      routes:
+        - id: test1
+          uri: http://127.0.0.1:8443
+          predicates:
+            - Path=/test1/**
+          filters:
+            - StripPrefix=1
+  codec:
+    max-in-memory-size: 12MB
+server:
+  port: 8001
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG

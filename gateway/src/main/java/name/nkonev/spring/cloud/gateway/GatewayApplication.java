@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import reactor.core.publisher.Mono;
 
-// while true; do curl -v -d "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" http://localhost:8282/foo;  done
-// -Dio.netty.leakDetection.level=PARANOID -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/tmp
+// while true; do curl --location --request POST 'http://localhost:8001/test/' --header 'Content-Type: application/json' --data-raw '{}';  done
+// -XX:MaxDirectMemorySize=200M
 // https://dzone.com/articles/troubleshooting-problems-with-native-off-heap-memo
 @SpringBootApplication
 public class GatewayApplication {
@@ -20,20 +20,15 @@ public class GatewayApplication {
 
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route("foo", r -> r.path("/foo")
-                        .filters(f -> f.modifyRequestBody(String.class, String.class, MediaType.APPLICATION_JSON_VALUE,
-                                (exchange, s) -> Mono.just(s))
-                                .filter(((exchange, chain) -> {
-                                    //do nothing but set complete
-                                    return exchange.getResponse().setComplete();
+        return builder.routes().route("test", r -> r.path("/test/**")
+                .filters(f -> f.stripPrefix(1).modifyRequestBody(String.class, String.class, MediaType.APPLICATION_JSON_VALUE,
+                        (exchange, s) -> {
+                            byte[] body = new byte[10 * 1024 * 1024];
+                            return Mono.just(new String(body));
+                        }).filter(((exchange, chain) -> {
+                    return chain.filter(exchange);
+                }))).uri("http://localhost:8443")).build();
 
-                                }))
-                        )
-
-                        .uri("lb://foo")
-                )
-                .build();
     }
 
 }
