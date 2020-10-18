@@ -17,7 +17,7 @@ public class CustomGlobalFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         final NettyDataBuffer dataBuffer = (NettyDataBuffer) exchange.getResponse().bufferFactory().allocateBuffer(100);
-        LOGGER.info("Делаем утечку");
+        LOGGER.trace("Make a leak");
         dataBuffer.getNativeBuffer().copy();
         return chain.filter(exchange);
     }
