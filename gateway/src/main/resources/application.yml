@@ -1,15 +1,13 @@
-logging.level.org.springframework.cloud.gateway.filter: trace
-
 server:
   port: 8282
-
+logging:
+  level:
+    reactor:
+      netty: DEBUG
 spring:
   application:
     name: gateway
   cloud:
-    consul:
-      discovery:
-        register: false
     loadbalancer:
       cache:
         ttl: 30s
@@ -22,7 +20,7 @@ spring:
       routes:
         - predicates:
             - Path=/foo
-          uri: lb://foo
+          uri: http://127.0.0.1:10001/foo
           filters:
             - name: Retry
               args:

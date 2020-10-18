@@ -1,8 +1,23 @@
-To make your microservices resilient to restart consul you should 
-1) set `spring.cloud.consul.discovery.heartbeat.enabled: true` and 
-2) run consul v1.7.1 as
-```bash
-./consul agent -data-dir /var/tmp/consul -advertise 127.0.0.1 -server -bootstrap
+How to detect native memory leak
+* You need enforce GC pressure by setting low value of Xmx
+* Also set -Dio.netty.leakDetection.level=PARANOID
+```
+-Xms32m
+-Xmx32m
+-Dio.netty.leakDetection.level=PARANOID
+```
+
+Full tested conf
+```
+-Xms32m
+-Xmx32m
+-XX:MetaspaceSize=128M
+-XX:MaxMetaspaceSize=128M
+-Dio.netty.leakDetection.level=PARANOID
+-XX:NativeMemoryTracking=summary
+-XX:MaxDirectMemorySize=2m
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath=/var/tmp
 ```
 
 If you have problems with native memory, which is used by Netty, consider to tune
