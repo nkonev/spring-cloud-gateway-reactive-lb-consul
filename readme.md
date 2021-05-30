@@ -9,8 +9,8 @@ If you have problems with native memory, which is used by Netty, consider to tun
 `-Djdk.nio.maxCachedBufferSize` and `-XX:MaxDirectMemorySize`
 See [also](https://dzone.com/articles/troubleshooting-problems-with-native-off-heap-memo).
 
-# Dummy test
+# Test
 ```
-./consul agent -dev
+./consul agent -data-dir /var/tmp/consul -advertise 127.0.0.1 -server -bootstrap
 curl -i 'http://localhost:8282/foo'
 ```
