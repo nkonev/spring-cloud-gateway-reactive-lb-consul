@@ -14,6 +14,9 @@ spring:
       cache:
         ttl: 30s
     gateway:
+      predicate:
+        cloud-foundry-route-service:
+          enabled: false
       httpclient:
         connect-timeout: 1000
         response-timeout: 5s
