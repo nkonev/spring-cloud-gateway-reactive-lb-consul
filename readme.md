@@ -8,3 +8,9 @@ To make your microservices resilient to restart consul you should
 If you have problems with native memory, which is used by Netty, consider to tune
 `-Djdk.nio.maxCachedBufferSize` and `-XX:MaxDirectMemorySize`
 See [also](https://dzone.com/articles/troubleshooting-problems-with-native-off-heap-memo).
+
+# Dummy test
+```
+./consul agent -dev
+curl -i 'http://localhost:8282/foo'
+```

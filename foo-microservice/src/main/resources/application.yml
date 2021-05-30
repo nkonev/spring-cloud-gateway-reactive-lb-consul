@@ -6,10 +6,4 @@ spring:
       discovery:
         heartbeat:
           enabled: true
-          ttl-unit: s
-          ttl-value: 10
-    loadbalancer:
-      cache:
-        ttl: 30s
-      ribbon:
-        enabled: false
+          ttl: 10s
