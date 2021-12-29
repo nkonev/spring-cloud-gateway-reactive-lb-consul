@@ -16,5 +16,8 @@ spring:
         response-timeout: 5s
       routes:
         - predicates:
-            - Path=/foo
+            - Path=/h2c
           uri: http://127.0.0.1:8088
+        - predicates:
+            - Path=/http
+          uri: http://127.0.0.1:8089

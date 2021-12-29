@@ -12,7 +12,7 @@ public class H2CServer {
                 HttpServer.create()
                         .port(8088)
                         .protocol(HttpProtocol.H2C)
-                        .handle((request, response) -> response.sendString(Mono.just("hello")))
+                        .handle((request, response) -> response.sendString(Mono.just("hello from h2c")))
                         .bindNow();
 
         server.onDispose()
