@@ -27,7 +27,6 @@ public class H2CAwareNettyRoutingFilter extends NettyRoutingFilter {
 
         boolean h2cRoute = ofNullable(route.getMetadata().get("h2c"))
                 .map(o -> (Boolean)o)
-                .filter(aBoolean -> aBoolean)
                 .orElse(false);
         if (h2cRoute) {
             // https://projectreactor.io/docs/netty/release/reference/index.html#_http2_2
