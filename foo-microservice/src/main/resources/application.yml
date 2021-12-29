@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: foo
@@ -7,3 +8,5 @@ spring:
         heartbeat:
           enabled: true
           ttl: 10s
+server:
+  port: 8762
