@@ -7,6 +7,7 @@ To make your microservices resilient to restart consul you should
 3) Dig [DNS queries](https://www.consul.io/docs/discovery/dns)
 ```
 dig @127.0.0.1 -p 8600 foo.service.dc1.consul. +timeout=1 SRV
+dig @127.0.0.1 -p 8600 foo.service.consul. +timeout=1 SRV
 ```
 Response
 ![img](.markdown/dns.png)
