@@ -7,12 +7,6 @@ spring:
   application:
     name: gateway
   cloud:
-    consul:
-      discovery:
-        register: false
-    loadbalancer:
-      cache:
-        ttl: 30s
     gateway:
       predicate:
         cloud-foundry-route-service:
@@ -23,8 +17,4 @@ spring:
       routes:
         - predicates:
             - Path=/foo
-          uri: lb://foo
-          filters:
-            - name: Retry
-              args:
-                methods: GET
+          uri: http://127.0.0.1:8088
