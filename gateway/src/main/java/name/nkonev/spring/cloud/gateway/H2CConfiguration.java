@@ -3,7 +3,6 @@ package name.nkonev.spring.cloud.gateway;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.embedded.NettyWebServerFactoryCustomizer;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
-import org.springframework.cloud.gateway.config.HttpClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -25,9 +24,4 @@ public class H2CConfiguration {
         };
     }
 
-    // https://projectreactor.io/docs/netty/release/reference/index.html#_http2_2
-    @Bean
-    public HttpClientCustomizer h2ClientCustomizer() {
-        return httpClient -> httpClient.protocol(/*HttpProtocol.HTTP11, */HttpProtocol.H2C);
-    }
 }

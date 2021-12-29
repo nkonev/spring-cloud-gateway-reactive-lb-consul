@@ -12,12 +12,14 @@ spring:
         cloud-foundry-route-service:
           enabled: false
       httpclient:
-        connect-timeout: 1000
-        response-timeout: 5s
+        connect-timeout: 120000
+        response-timeout: 500s
       routes:
         - predicates:
             - Path=/h2c
           uri: http://127.0.0.1:8088
+          metadata:
+            h2c: true
         - predicates:
             - Path=/http
           uri: http://127.0.0.1:8089
