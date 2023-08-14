@@ -20,6 +20,7 @@ spring:
         http-client:
           connect-timeout: 1s
           read-timeout: 5s
+          type: jdk
         routes:
           - id: my-foo
             predicates:
