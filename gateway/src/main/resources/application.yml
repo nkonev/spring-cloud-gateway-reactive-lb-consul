@@ -14,17 +14,12 @@ spring:
       cache:
         ttl: 30s
     gateway:
-      predicate:
-        cloud-foundry-route-service:
-          enabled: false
-      httpclient:
-        connect-timeout: 1000
-        response-timeout: 5s
-      routes:
-        - predicates:
-            - Path=/foo
-          uri: lb://foo
-          filters:
-            - name: Retry
-              args:
-                methods: GET
+      mvc:
+        http-client:
+          connect-timeout: 1s
+          read-timeout: 5s
+        routes:
+          - id: my-foo
+            predicates:
+              - Path=/foo
+            uri: lb://foo
