@@ -6,6 +6,9 @@ server:
   port: 8282
 
 spring:
+  threads:
+    virtual:
+      enabled: true
   application:
     name: gateway
   cloud:
