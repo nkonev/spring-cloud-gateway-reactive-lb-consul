@@ -31,6 +31,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <commandlineArguments>-XX:MaxDirectMemorySize=24M</commandlineArguments>
+                </configuration>
             </plugin>
 
             <plugin>

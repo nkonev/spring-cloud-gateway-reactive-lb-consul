@@ -1,4 +1,4 @@
-logging.level.org.springframework.cloud.gateway.filter: trace
+# logging.level.org.springframework.cloud.gateway.filter: trace
 
 server:
   port: 8282
@@ -24,7 +24,3 @@ spring:
         - predicates:
             - Path=/foo
           uri: http://localhost:8762
-          filters:
-            - name: Retry
-              args:
-                methods: GET
